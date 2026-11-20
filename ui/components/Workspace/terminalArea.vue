@@ -18,6 +18,16 @@ const supportsTerminalAiCommand = computed(() => {
   if (!pane) return false;
   return isKokoTerminalAiAvailable(pane.id);
 });
+// Server-side Terminal AI wins when Koko offers it; otherwise fall back to the desktop-local AI sources.
+const supportsLocalAiCommand = computed(() => {
+  const pane = activePane.value;
+  return Boolean(
+    isTauriRuntime() &&
+    pane?.mode === "session" &&
+    pane.status === "connected" &&
+    ["ssh", "local-shell"].includes(pane.protocol.toLowerCase())
+  );
+});
 
 const openLogin = () => {
   useEventBus().emit("login", undefined);
@@ -117,5 +127,6 @@ const openLogin = () => {
     </div>
 
     <WorkspaceTerminalAiCommandPopover v-if="supportsTerminalAiCommand && activePane" :pane="activePane" />
+    <WorkspaceTerminalLocalAiCommandPopover v-else-if="supportsLocalAiCommand && activePane" :pane="activePane" />
   </section>
 </template>

@@ -62,6 +62,15 @@ const sectionDefs = computed(() => {
       authenticatedOnly: false
     },
     {
+      key: "ai" as const,
+      label: t("Common.AI"),
+      description: t("Setting.AiDescription"),
+      icon: "i-lucide-sparkles",
+      routeName: "setting-ai",
+      tauriOnly: true,
+      authenticatedOnly: false
+    },
+    {
       key: "about" as const,
       label: t("Common.About"),
       description: t("Setting.AboutDescription"),
@@ -208,8 +217,11 @@ watch(
 
     <main class="min-w-0 flex-1 overflow-y-auto bg-[var(--app-main-bg)]">
       <div
-        class="mx-auto w-full max-w-4xl px-4 pb-8 sm:px-6 md:px-8 md:pb-10 lg:px-12"
-        :class="hasNativeTitlebarInset ? 'pt-6 md:pt-[76px]' : 'pt-5 md:pt-10'"
+        class="mx-auto w-full px-4 pb-8 sm:px-6 md:px-8 md:pb-10 lg:px-12"
+        :class="[
+          hasNativeTitlebarInset ? 'pt-6 md:pt-[76px]' : 'pt-5 md:pt-10',
+          activeSection?.key === 'ai' ? 'max-w-6xl' : 'max-w-4xl'
+        ]"
       >
         <header class="mb-5 border-b border-[var(--app-border)] pb-4 md:mb-6 md:pb-5">
           <h1 class="text-xl font-semibold text-highlighted">
